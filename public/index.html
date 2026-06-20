@@ -143,13 +143,82 @@
             </button>
 
         </aside>
-        <main class="flex-1 flex flex-col h-screen overflow-y-auto relative bg-transparent">
+        <main class="flex-1 flex flex-col h-screen overflow-y-auto overflow-x-hidden relative bg-transparent">
+
+            <!-- Mobile Header -->
+            <header class="md:hidden bg-slate-900 text-white flex items-center justify-between px-6 h-16 shadow-md z-30 sticky top-0 flex-shrink-0">
+                <h1 class="text-xl font-bold text-red-500 flex items-center gap-2">
+                    <img src="https://img.freepik.com/free-vector/beautiful-hands-saving-blood-drop-card-design_1035-23347.jpg"
+                        class="h-8 w-8 object-contain bg-white rounded-full p-1 animate-zoom" alt="Logo">
+                    <span>BloodBank</span>
+                </h1>
+                <button id="mobile-menu-btn" class="text-white hover:text-red-500 focus:outline-none p-1 transition-colors" aria-label="Toggle Menu">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon-hamburger" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </header>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden bg-slate-900 text-white border-t border-slate-800 w-full z-40 sticky top-16 shadow-xl flex-shrink-0">
+                <nav class="p-4 space-y-2 flex flex-col">
+                    <button id="mobile-nav-home" class="w-full flex items-center gap-3 px-4 py-3 bg-red-600 rounded-lg text-white font-medium transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        <span>Home</span>
+                    </button>
+                    <button id="mobile-nav-register" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        <span>Registration</span>
+                    </button>
+                    <button id="mobile-nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </button>
+                    <button id="mobile-nav-contact" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Contact Us</span>
+                    </button>
+                    <button id="mobile-nav-login" class="w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Donor Login</span>
+                    </button>
+                    <button id="mobile-nav-profile" class="hidden w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span>My Profile</span>
+                    </button>
+                    <button id="mobile-nav-requests" class="hidden w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-all text-left">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        <span>My Blood Requests</span>
+                    </button>
+                    <button id="mobile-btn-logout" class="hidden w-full flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-red-500 transition-all text-left">
+                        <svg fill="none" class="w-5 h-5" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
+                </nav>
+            </div>
 
             <div
                 class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-300/30 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20">
             </div>
 
-            <div class="p-6 md:p-10 max-w-7xl mx-auto w-full z-10 relative flex-1">
+            <div class="p-4 sm:p-6 md:p-10 max-w-7xl mx-auto w-full z-10 relative flex-1">
 
                 <div id="section-home" class="flex flex-col h-full justify-center">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -158,7 +227,7 @@
                                 class="inline-block px-4 py-1.5 bg-white/50 text-red-700 rounded-full text-sm font-semibold tracking-wide border border-red-200 shadow-sm">
                                 ❤️ Save Life, Donate Blood
                             </div>
-                            <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight">
                                 Be the Reason for <br>
                                 <span
                                     class="text-transparent bg-clip-text bg-gradient-to-r from-red-700 to-red-500">Someone's
@@ -180,9 +249,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="relative hidden lg:block">
+                        <div class="relative block">
                             <div
-                                class="relative z-10 bg-gradient-to-tr from-red-600 to-orange-400 rounded-[3rem] p-1 shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 flex items-center justify-center h-96 overflow-hidden">
+                                class="relative z-10 bg-gradient-to-tr from-red-600 to-orange-400 rounded-[2rem] sm:rounded-[3rem] p-1 shadow-2xl rotate-0 sm:rotate-3 hover:rotate-0 transition-transform duration-500 flex items-center justify-center h-64 sm:h-80 lg:h-96 overflow-hidden">
                                 <img src="blood cov.jpg" alt="Blood Donation" class="w-full h-full object-cover">
                             </div>
                         </div>
@@ -428,14 +497,14 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="text-left text-xs font-bold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-gray-100">
-                                        <th class="px-6 py-3">Requester Name</th>
-                                        <th class="px-6 py-3">Phone</th>
-                                        <th class="px-6 py-3">Hospital</th>
-                                        <th class="px-6 py-3">Location</th>
-                                        <th class="px-6 py-3">Group</th>
-                                        <th class="px-6 py-3">Message</th>
-                                        <th class="px-6 py-3">Status</th>
-                                        <th class="px-6 py-3">Action</th>
+                                        <th class="px-3 py-3 sm:px-6">Requester Name</th>
+                                        <th class="px-3 py-3 sm:px-6">Phone</th>
+                                        <th class="px-3 py-3 sm:px-6">Hospital</th>
+                                        <th class="px-3 py-3 sm:px-6">Location</th>
+                                        <th class="px-3 py-3 sm:px-6">Group</th>
+                                        <th class="px-3 py-3 sm:px-6">Message</th>
+                                        <th class="px-3 py-3 sm:px-6">Status</th>
+                                        <th class="px-3 py-3 sm:px-6">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="requests-table-body" class="text-sm text-gray-700 divide-y divide-gray-100"></tbody>
@@ -466,7 +535,7 @@
                         </div>
                         <div class="flex gap-2 w-full md:w-auto">
                             <select id="filter-group"
-                                class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 focus:border-red-500 outline-none">
+                                class="w-1/2 md:w-auto px-2 py-2 sm:px-4 sm:py-2 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-600 focus:border-red-500 outline-none">
                                 <option value="">All Groups</option>
                                 <option value="O+">O+</option>
                                 <option value="A+">A+</option>
@@ -478,7 +547,7 @@
                                 <option value="o-">o-</option>
                             </select>
                             <select id="filter-branch"
-                                class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 focus:border-red-500 outline-none">
+                                class="w-1/2 md:w-auto px-2 py-2 sm:px-4 sm:py-2 border border-gray-200 rounded-lg text-xs sm:text-sm text-gray-600 focus:border-red-500 outline-none">
                                 <option value="">All Branches</option>
                                 <option value="CSE">CSE</option>
                                 <option value="ECE">ECE</option>
@@ -494,13 +563,13 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="text-left text-xs font-bold text-slate-500 uppercase tracking-wider">
-                                        <th class="px-6 py-3">Student ID</th>
-                                        <th class="px-6 py-3">Name</th>
-                                        <th class="px-6 py-3">Group</th>
-                                        <th class="px-6 py-3">Mobile</th>
-                                        <th class="px-6 py-3">College</th>
-                                        <th class="px-6 py-3">Branch</th>
-                                        <th class="px-6 py-3">Status</th>
+                                        <th class="px-3 py-3 sm:px-6">Student ID</th>
+                                        <th class="px-3 py-3 sm:px-6">Name</th>
+                                        <th class="px-3 py-3 sm:px-6">Group</th>
+                                        <th class="px-3 py-3 sm:px-6">Mobile</th>
+                                        <th class="px-3 py-3 sm:px-6">College</th>
+                                        <th class="px-3 py-3 sm:px-6">Branch</th>
+                                        <th class="px-3 py-3 sm:px-6">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="table-body" class="text-sm text-gray-700 divide-y divide-gray-100"></tbody>
@@ -585,13 +654,13 @@
     </div>
 
     <!-- Blood Request Modal -->
-    <div id="requestModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-lg w-full p-8 relative mx-4 animate-fade-in-up">
+    <div id="requestModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-lg w-full p-6 md:p-8 relative my-auto animate-fade-in-up max-h-[90vh] flex flex-col">
             <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold text-slate-800 mb-2">Request Blood</h3>
-            <p class="text-sm text-slate-500 mb-6">Send a request to donor <span id="req-donor-name" class="font-semibold text-red-600"></span> (<span id="req-donor-group" class="font-semibold"></span>).</p>
+            <p class="text-sm text-slate-500 mb-4">Send a request to donor <span id="req-donor-name" class="font-semibold text-red-600"></span> (<span id="req-donor-group" class="font-semibold"></span>).</p>
             
-            <form id="bloodRequestForm" class="space-y-4">
+            <form id="bloodRequestForm" class="space-y-4 overflow-y-auto pr-1 flex-1">
                 <input type="hidden" id="req-donor-id">
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-slate-700">Requester Name</label>

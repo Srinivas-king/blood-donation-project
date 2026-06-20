@@ -7,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var _a, _b, _c, _d, _e, _f, _g;
 const API_URL = '/api';
 // --- 1. DOM ELEMENTS ---
 // Sections
@@ -90,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogout.classList.remove('hidden');
         btnLogout.classList.add('text-red-500');
     }
+    const mobileBtnLogout = document.getElementById('mobile-btn-logout');
+    if ((isAdmin || donorUser) && mobileBtnLogout) {
+        mobileBtnLogout.classList.remove('hidden');
+        mobileBtnLogout.classList.add('flex');
+    }
     // MENU BUTTONS CHECK FOR LOGGED IN DONOR
     if (donorUser) {
         if (btnNavProfile) {
@@ -99,6 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnNavRequests) {
             btnNavRequests.classList.remove('hidden');
             btnNavRequests.classList.add('flex');
+        }
+        const mobileBtnNavProfile = document.getElementById('mobile-nav-profile');
+        if (mobileBtnNavProfile) {
+            mobileBtnNavProfile.classList.remove('hidden');
+            mobileBtnNavProfile.classList.add('flex');
+        }
+        const mobileBtnNavRequests = document.getElementById('mobile-nav-requests');
+        if (mobileBtnNavRequests) {
+            mobileBtnNavRequests.classList.remove('hidden');
+            mobileBtnNavRequests.classList.add('flex');
         }
     }
 });
@@ -140,6 +156,27 @@ function showSection(sectionName) {
             btn.classList.add('text-slate-400', 'hover:bg-slate-800');
         }
     });
+    // Reset mobile buttons
+    const mobileButtonsMap = {
+        'home': document.getElementById('mobile-nav-home'),
+        'form': document.getElementById('mobile-nav-register'),
+        'dashboard': document.getElementById('mobile-nav-dashboard'),
+        'contact': document.getElementById('mobile-nav-contact'),
+        'login': document.getElementById('mobile-nav-login'),
+        'profile': document.getElementById('mobile-nav-profile'),
+        'requests': document.getElementById('mobile-nav-requests')
+    };
+    Object.values(mobileButtonsMap).forEach(btn => {
+        if (btn) {
+            btn.classList.remove('bg-red-600', 'text-white', 'shadow-lg');
+            btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+        }
+    });
+    const activeMobileBtn = mobileButtonsMap[sectionName];
+    if (activeMobileBtn) {
+        activeMobileBtn.classList.add('bg-red-600', 'text-white', 'shadow-lg');
+        activeMobileBtn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+    }
     // Show Target
     if (sectionName === 'home') {
         if (sectionHome)
@@ -229,6 +266,54 @@ if (btnNavProfile)
     btnNavProfile.addEventListener('click', () => showSection('profile'));
 if (btnNavRequests)
     btnNavRequests.addEventListener('click', () => showSection('requests'));
+// Mobile Hamburger Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuIconHamburger = document.getElementById('menu-icon-hamburger');
+const menuIconClose = document.getElementById('menu-icon-close');
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            menuIconHamburger === null || menuIconHamburger === void 0 ? void 0 : menuIconHamburger.classList.add('hidden');
+            menuIconClose === null || menuIconClose === void 0 ? void 0 : menuIconClose.classList.remove('hidden');
+        }
+        else {
+            mobileMenu.classList.add('hidden');
+            menuIconHamburger === null || menuIconHamburger === void 0 ? void 0 : menuIconHamburger.classList.remove('hidden');
+            menuIconClose === null || menuIconClose === void 0 ? void 0 : menuIconClose.classList.add('hidden');
+        }
+    });
+}
+function closeMobileMenu() {
+    if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+        menuIconHamburger === null || menuIconHamburger === void 0 ? void 0 : menuIconHamburger.classList.remove('hidden');
+        menuIconClose === null || menuIconClose === void 0 ? void 0 : menuIconClose.classList.add('hidden');
+    }
+}
+// Mobile Nav Listeners
+(_a = document.getElementById('mobile-nav-home')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => { showSection('home'); closeMobileMenu(); });
+(_b = document.getElementById('mobile-nav-register')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => { showSection('form'); closeMobileMenu(); });
+(_c = document.getElementById('mobile-nav-dashboard')) === null || _c === void 0 ? void 0 : _c.addEventListener('click', () => { showSection('dashboard'); closeMobileMenu(); });
+(_d = document.getElementById('mobile-nav-contact')) === null || _d === void 0 ? void 0 : _d.addEventListener('click', () => { showSection('contact'); closeMobileMenu(); });
+(_e = document.getElementById('mobile-nav-login')) === null || _e === void 0 ? void 0 : _e.addEventListener('click', () => { showSection('login'); closeMobileMenu(); });
+(_f = document.getElementById('mobile-nav-profile')) === null || _f === void 0 ? void 0 : _f.addEventListener('click', () => { showSection('profile'); closeMobileMenu(); });
+(_g = document.getElementById('mobile-nav-requests')) === null || _g === void 0 ? void 0 : _g.addEventListener('click', () => { showSection('requests'); closeMobileMenu(); });
+const mobileBtnLogout = document.getElementById('mobile-btn-logout');
+if (mobileBtnLogout) {
+    mobileBtnLogout.addEventListener('click', () => {
+        const wasDonor = !!localStorage.getItem('donorUser');
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('donorUser'); // Logout donor too
+        alert("Logged Out Successfully!");
+        if (wasDonor) {
+            sessionStorage.setItem("showLoginAfterReload", "true");
+        }
+        location.reload();
+    });
+}
 // --- 5. FETCH DONORS ---
 function fetchDonors() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -327,11 +412,11 @@ function renderTable(donors) {
             contactInfoHtml = `<button onclick="openRequestModal(${donor.id}, '${donor.name}', '${donor.blood_group}')" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm shadow-red-500/10">Request Blood</button>`;
         }
         row.innerHTML = `
-            <td class="px-6 py-4 font-bold text-blue-600">${donor.student_id}</td> <td class="px-6 py-4">${donor.name}</td>
-            <td class="px-6 py-4">${donor.blood_group}</td> <td class="px-6 py-4">${contactInfoHtml}</td>
-            <td class="px-6 py-4">${donor.college_name || '-'}</td> <td class="px-6 py-4">${donor.branch}</td>
-            <td class="px-6 py-4">${statusBadge}</td> ${isAdmin ? `
-            <td class="px-6 py-4"><button onclick="deleteDonor(${donor.id})" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>` : ''}
+            <td class="px-3 py-3 sm:px-6 sm:py-4 font-bold text-blue-600">${donor.student_id}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.name}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.blood_group}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${contactInfoHtml}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.college_name || '-'}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.branch}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${statusBadge}</td> ${isAdmin ? `
+            <td class="px-3 py-3 sm:px-6 sm:py-4"><button onclick="deleteDonor(${donor.id})" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>` : ''}
         `;
         tableBody.appendChild(row);
     });
@@ -584,14 +669,14 @@ function fetchRequests(donorId) {
                     actionHtml = `<span class="text-xs text-gray-400 font-medium">Completed</span>`;
                 }
                 row.innerHTML = `
-                <td class="px-6 py-4 font-bold text-slate-800">${req.requester_name}</td>
-                <td class="px-6 py-4">${req.requester_phone}</td>
-                <td class="px-6 py-4">${req.hospital_name}</td>
-                <td class="px-6 py-4">${req.location}</td>
-                <td class="px-6 py-4 font-semibold text-red-600">${req.blood_group}</td>
-                <td class="px-6 py-4 max-w-xs truncate" title="${req.message}">${req.message}</td>
-                <td class="px-6 py-4">${statusBadge}</td>
-                <td class="px-6 py-4">${actionHtml}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 font-bold text-slate-800">${req.requester_name}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.requester_phone}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.hospital_name}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.location}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 font-semibold text-red-600">${req.blood_group}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 max-w-xs truncate" title="${req.message}">${req.message}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${statusBadge}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${actionHtml}</td>
             `;
                 tableBody.appendChild(row);
             });
@@ -621,11 +706,9 @@ window.updateRequestStatus = (reqId, status) => __awaiter(this, void 0, void 0, 
         console.error(e);
     }
 });
-
 // --- PASSWORD VISIBILITY TOGGLE ---
 const toggleRegPasswordBtn = document.getElementById('toggle-reg-password');
 const regPasswordInput = document.getElementById('password');
-
 if (toggleRegPasswordBtn && regPasswordInput) {
     toggleRegPasswordBtn.addEventListener('click', () => {
         const isPassword = regPasswordInput.type === 'password';
@@ -640,10 +723,8 @@ if (toggleRegPasswordBtn && regPasswordInput) {
                </svg>`;
     });
 }
-
 const toggleLoginPasswordBtn = document.getElementById('toggle-login-password');
 const loginPasswordInput = document.getElementById('login-password');
-
 if (toggleLoginPasswordBtn && loginPasswordInput) {
     toggleLoginPasswordBtn.addEventListener('click', () => {
         const isPassword = loginPasswordInput.type === 'password';
@@ -658,4 +739,3 @@ if (toggleLoginPasswordBtn && loginPasswordInput) {
                </svg>`;
     });
 }
-

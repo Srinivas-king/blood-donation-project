@@ -93,6 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogout.classList.remove('hidden');
         btnLogout.classList.add('text-red-500');
     }
+    const mobileBtnLogout = document.getElementById('mobile-btn-logout');
+    if ((isAdmin || donorUser) && mobileBtnLogout) {
+        mobileBtnLogout.classList.remove('hidden');
+        mobileBtnLogout.classList.add('flex');
+    }
 
     // MENU BUTTONS CHECK FOR LOGGED IN DONOR
     if (donorUser) {
@@ -103,6 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnNavRequests) {
             btnNavRequests.classList.remove('hidden');
             btnNavRequests.classList.add('flex');
+        }
+        const mobileBtnNavProfile = document.getElementById('mobile-nav-profile');
+        if (mobileBtnNavProfile) {
+            mobileBtnNavProfile.classList.remove('hidden');
+            mobileBtnNavProfile.classList.add('flex');
+        }
+        const mobileBtnNavRequests = document.getElementById('mobile-nav-requests');
+        if (mobileBtnNavRequests) {
+            mobileBtnNavRequests.classList.remove('hidden');
+            mobileBtnNavRequests.classList.add('flex');
         }
     }
 });
@@ -140,6 +155,28 @@ function showSection(sectionName: 'home' | 'form' | 'dashboard' | 'contact' | 'p
             btn.classList.add('text-slate-400', 'hover:bg-slate-800');
         }
     });
+
+    // Reset mobile buttons
+    const mobileButtonsMap: { [key: string]: HTMLElement | null } = {
+        'home': document.getElementById('mobile-nav-home'),
+        'form': document.getElementById('mobile-nav-register'),
+        'dashboard': document.getElementById('mobile-nav-dashboard'),
+        'contact': document.getElementById('mobile-nav-contact'),
+        'login': document.getElementById('mobile-nav-login'),
+        'profile': document.getElementById('mobile-nav-profile'),
+        'requests': document.getElementById('mobile-nav-requests')
+    };
+    Object.values(mobileButtonsMap).forEach(btn => {
+        if (btn) {
+            btn.classList.remove('bg-red-600', 'text-white', 'shadow-lg');
+            btn.classList.add('text-slate-400', 'hover:bg-slate-800');
+        }
+    });
+    const activeMobileBtn = mobileButtonsMap[sectionName];
+    if (activeMobileBtn) {
+        activeMobileBtn.classList.add('bg-red-600', 'text-white', 'shadow-lg');
+        activeMobileBtn.classList.remove('text-slate-400', 'hover:bg-slate-800');
+    }
 
     // Show Target
     if (sectionName === 'home') {
@@ -212,6 +249,59 @@ if (btnNavContact) btnNavContact.addEventListener('click', () => showSection('co
 if (btnNavLogin) btnNavLogin.addEventListener('click', () => showSection('login'));
 if (btnNavProfile) btnNavProfile.addEventListener('click', () => showSection('profile'));
 if (btnNavRequests) btnNavRequests.addEventListener('click', () => showSection('requests'));
+
+// Mobile Hamburger Menu Toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const menuIconHamburger = document.getElementById('menu-icon-hamburger');
+const menuIconClose = document.getElementById('menu-icon-close');
+
+if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            menuIconHamburger?.classList.add('hidden');
+            menuIconClose?.classList.remove('hidden');
+        } else {
+            mobileMenu.classList.add('hidden');
+            menuIconHamburger?.classList.remove('hidden');
+            menuIconClose?.classList.add('hidden');
+        }
+    });
+}
+
+function closeMobileMenu() {
+    if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+        menuIconHamburger?.classList.remove('hidden');
+        menuIconClose?.classList.add('hidden');
+    }
+}
+
+// Mobile Nav Listeners
+document.getElementById('mobile-nav-home')?.addEventListener('click', () => { showSection('home'); closeMobileMenu(); });
+document.getElementById('mobile-nav-register')?.addEventListener('click', () => { showSection('form'); closeMobileMenu(); });
+document.getElementById('mobile-nav-dashboard')?.addEventListener('click', () => { showSection('dashboard'); closeMobileMenu(); });
+document.getElementById('mobile-nav-contact')?.addEventListener('click', () => { showSection('contact'); closeMobileMenu(); });
+document.getElementById('mobile-nav-login')?.addEventListener('click', () => { showSection('login'); closeMobileMenu(); });
+document.getElementById('mobile-nav-profile')?.addEventListener('click', () => { showSection('profile'); closeMobileMenu(); });
+document.getElementById('mobile-nav-requests')?.addEventListener('click', () => { showSection('requests'); closeMobileMenu(); });
+
+const mobileBtnLogout = document.getElementById('mobile-btn-logout');
+if (mobileBtnLogout) {
+    mobileBtnLogout.addEventListener('click', () => {
+        const wasDonor = !!localStorage.getItem('donorUser');
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('donorUser'); // Logout donor too
+        alert("Logged Out Successfully!");
+        if (wasDonor) {
+            sessionStorage.setItem("showLoginAfterReload", "true");
+        }
+        location.reload();
+    });
+}
+
 
 
 // --- 5. FETCH DONORS ---
@@ -307,11 +397,11 @@ function renderTable(donors: any[]) {
         }
 
         row.innerHTML = `
-            <td class="px-6 py-4 font-bold text-blue-600">${donor.student_id}</td> <td class="px-6 py-4">${donor.name}</td>
-            <td class="px-6 py-4">${donor.blood_group}</td> <td class="px-6 py-4">${contactInfoHtml}</td>
-            <td class="px-6 py-4">${donor.college_name || '-'}</td> <td class="px-6 py-4">${donor.branch}</td>
-            <td class="px-6 py-4">${statusBadge}</td> ${isAdmin ? `
-            <td class="px-6 py-4"><button onclick="deleteDonor(${donor.id})" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>` : ''}
+            <td class="px-3 py-3 sm:px-6 sm:py-4 font-bold text-blue-600">${donor.student_id}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.name}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.blood_group}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${contactInfoHtml}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.college_name || '-'}</td> <td class="px-3 py-3 sm:px-6 sm:py-4">${donor.branch}</td>
+            <td class="px-3 py-3 sm:px-6 sm:py-4">${statusBadge}</td> ${isAdmin ? `
+            <td class="px-3 py-3 sm:px-6 sm:py-4"><button onclick="deleteDonor(${donor.id})" class="text-red-500 hover:text-red-700 font-bold">🗑️</button></td>` : ''}
         `;
         tableBody.appendChild(row);
     });
@@ -565,14 +655,14 @@ async function fetchRequests(donorId: number) {
             }
 
             row.innerHTML = `
-                <td class="px-6 py-4 font-bold text-slate-800">${req.requester_name}</td>
-                <td class="px-6 py-4">${req.requester_phone}</td>
-                <td class="px-6 py-4">${req.hospital_name}</td>
-                <td class="px-6 py-4">${req.location}</td>
-                <td class="px-6 py-4 font-semibold text-red-600">${req.blood_group}</td>
-                <td class="px-6 py-4 max-w-xs truncate" title="${req.message}">${req.message}</td>
-                <td class="px-6 py-4">${statusBadge}</td>
-                <td class="px-6 py-4">${actionHtml}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 font-bold text-slate-800">${req.requester_name}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.requester_phone}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.hospital_name}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${req.location}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 font-semibold text-red-600">${req.blood_group}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4 max-w-xs truncate" title="${req.message}">${req.message}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${statusBadge}</td>
+                <td class="px-3 py-3 sm:px-6 sm:py-4">${actionHtml}</td>
             `;
             tableBody.appendChild(row);
         });
