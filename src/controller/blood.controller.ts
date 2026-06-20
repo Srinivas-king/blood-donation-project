@@ -30,6 +30,10 @@ export class BloodController {
             res.status(201).json({ message: "Donor registered successfully", id: result.insertId });
         } catch (error: any) {
             console.error(error);
+            if (error && error.code === 'ER_DUP_ENTRY') {
+                res.status(409).json({ message: "This Student ID is already registered!" });
+                return;
+            }
             res.status(500).json({ message: "Registration failed", error: error.message });
         }
     }

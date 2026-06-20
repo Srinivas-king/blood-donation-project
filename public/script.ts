@@ -439,10 +439,11 @@ if (form) {
                 body: JSON.stringify(donorData)
             });
 
+            const data = await response.json().catch(() => ({}));
             if (response.ok) {
                 Swal.fire({ icon: 'success', title: 'Registered!', text: 'Details saved.' }).then(() => form.reset());
             } else {
-                throw new Error('Registration failed');
+                throw new Error(data.message || 'Registration failed');
             }
         } catch (error: any) {
             Swal.fire({ icon: 'error', title: 'Error', text: error.message });

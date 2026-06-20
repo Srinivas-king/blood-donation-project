@@ -50,11 +50,11 @@ export class BloodModel {
             donor.name,
             donor.mobile_number,
             donor.blood_group,
-            donor.branch,
-            Number(donor.age),
-            donor.gender,
+            donor.branch || '',
+            isNaN(Number(donor.age)) ? 0 : Number(donor.age),
+            donor.gender || '',
             donor.college_name,
-            validDate,  // ✅ Ikkada 'validDate' vadali (donor.last_donation_date kadu)
+            validDate,
             donor.address || '',
             donor.password || '1234'
         ]);

@@ -449,11 +449,12 @@ if (form) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(donorData)
             });
+            const data = yield response.json().catch(() => ({}));
             if (response.ok) {
                 Swal.fire({ icon: 'success', title: 'Registered!', text: 'Details saved.' }).then(() => form.reset());
             }
             else {
-                throw new Error('Registration failed');
+                throw new Error(data.message || 'Registration failed');
             }
         }
         catch (error) {
