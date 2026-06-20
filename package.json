@@ -2,7 +2,9 @@
   "name": "blood",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon --exec npx ts-node src/service/app.ts"
+    "dev": "nodemon --exec npx ts-node src/service/app.ts",
+    "build": "tsc",
+    "start": "node dist/service/app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
