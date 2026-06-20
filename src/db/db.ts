@@ -6,18 +6,16 @@ const dbConfig = {
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     port: Number(process.env.DB_PORT) || 3306,
+    // 🔥 Aiven Cloud Database kosam SSL required
+    ssl: process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : undefined
 };
 const dbName = process.env.DB_NAME || 'blood_bank';
 
 // A function to initialize the database and tables
 export async function initializeDatabase() {
     try {
-        // 1. Connect without DB name to create the database if it doesn't exist
-        const connection = await mysql.createConnection(dbConfig);
-        await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\``);
-        await connection.end();
-
-        // 2. Now connect to the database to create tables
+        // Aiven lo already database vālle create chesi istharu (defaultdb). 
+        // Direct ga tables create cheyadaniki connect avthunnam.
         const connWithDb = await mysql.createConnection({
             ...dbConfig,
             database: dbName
@@ -85,7 +83,7 @@ export async function initializeDatabase() {
     }
 }
 
-// Create a Connection Pool (Better than single connection)
+// Create a Connection Pool
 export const pool = mysql.createPool({
     ...dbConfig,
     database: dbName,
@@ -94,5 +92,5 @@ export const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// Export 'db' as alias for 'pool' (so service.ts works)
+// Export 'db' as alias for 'pool'
 export const db = pool;
